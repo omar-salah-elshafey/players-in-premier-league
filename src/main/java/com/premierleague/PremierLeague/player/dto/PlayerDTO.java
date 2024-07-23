@@ -1,5 +1,6 @@
 package com.premierleague.PremierLeague.player.dto;
 
+import com.premierleague.PremierLeague.team.model.Team;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -14,8 +15,8 @@ public class PlayerDTO {
     private String nationality;
     @NonNull
     private String position;
-    @NonNull
-    private String team;
+
+    private String teamName;
     @NonNull
     private Integer age;
 

@@ -4,6 +4,9 @@ import com.premierleague.PremierLeague.player.dto.PlayerDTO;
 import com.premierleague.PremierLeague.player.mapper.PlayerMapper;
 import com.premierleague.PremierLeague.player.model.Player;
 import com.premierleague.PremierLeague.player.repository.PlayerRepository;
+import com.premierleague.PremierLeague.team.exception.TeamNotFoundException;
+import com.premierleague.PremierLeague.team.model.Team;
+import com.premierleague.PremierLeague.team.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PlayerService {
     private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
     private final PlayerMapper playerMapper;
 
     public void addPlayer(PlayerDTO playerDTO){
+        Team team = teamRepository.findByName(playerDTO.getTeamName())
+                .orElseThrow(() -> new TeamNotFoundException("There is no team named: "+ playerDTO.getTeamName()));
+        Player player = playerMapper.PlayerDTOtoPlayer(playerDTO);
+        player.setTeam(team);
         playerRepository.save(playerMapper.PlayerDTOtoPlayer(playerDTO));
     }
 
@@ -25,27 +33,15 @@ public class PlayerService {
         return playerRepository.findAll().stream().map(playerMapper::PlayertoPlayerDTO).toList();
     }
 
-//    public void updatePlayer(PlayerDTO playerDTO){
-//        Optional<Player> existingPlayer = playerRepository.findByName(playerDTO.getName());
-//
-//        if (existingPlayer.isPresent()){
-//            Player playerUpdate = existingPlayer.get();
-//            playerUpdate.setName(playerDTO.getName());
-//            playerUpdate.setAge(playerDTO.getAge());
-//            playerUpdate.setNationality(playerDTO.getNationality());
-//            playerUpdate.setTeam(playerDTO.getTeam());
-//            playerUpdate.setPosition(playerDTO.getPosition());
-//            playerUpdate.setYellowCards(playerDTO.getYellowCards());
-//            playerUpdate.setRedCards(playerDTO.getRedCards());
-//        }
-//    }
-
     public void updatePlayer(PlayerDTO playerDTO) {
         Optional<Player> existingPlayer = playerRepository.findByName(playerDTO.getName());
 
         if (existingPlayer.isPresent()) {
             Player playerUpdate = existingPlayer.get();
+            Team team = teamRepository.findByName(playerDTO.getTeamName())
+                    .orElseThrow(() -> new TeamNotFoundException("There is no team named: "+ playerDTO.getTeamName()));
             playerMapper.updatePlayer(playerDTO, playerUpdate);
+            playerUpdate.setTeam(team);
             playerRepository.save(playerUpdate);
         }
     }
