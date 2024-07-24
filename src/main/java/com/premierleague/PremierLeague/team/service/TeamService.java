@@ -25,7 +25,7 @@ public class TeamService {
         return teamRepository.findAll().stream().map(teamMapper::teamToTeamDTO).toList();
     }
 
-    public void updateTeam(TeamDTO teamDTO) {
+    public void updateTeam(TeamDTO teamDTO){
         Optional<Team> existingTeam = teamRepository.findByName(teamDTO.getName());
 
         if (existingTeam.isPresent()) {

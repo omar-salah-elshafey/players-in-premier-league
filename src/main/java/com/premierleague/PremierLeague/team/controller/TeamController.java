@@ -37,13 +37,15 @@ public class TeamController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateTeam(@RequestBody TeamDTO teamDTO){
+    public ResponseEntity<String> updateTeam(@RequestBody TeamDTO teamDTO) {
         Optional<Team> existingTeam = teamRepository.findByName(teamDTO.getName());
         if (existingTeam.isPresent()){
             teamService.updateTeam(teamDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Team Updated Successfully :)");
         }
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Team Not found :(");
+        else {
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There's no teams named: "+ teamDTO.getName()+" :(");
+        }
     }
 
 

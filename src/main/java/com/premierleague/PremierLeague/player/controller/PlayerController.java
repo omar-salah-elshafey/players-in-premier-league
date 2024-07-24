@@ -44,19 +44,9 @@ public class PlayerController {
             playerService.updatePlayer(playerDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Player updated successfully :)");
         }
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Player not Found :(");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There's no Players named: "+ playerDTO.getName()+" :(");
 
     }
-
-//    @PutMapping("/update")
-//    public ResponseEntity<String> updatePlayer(@RequestBody PlayerDTO playerDTO) {
-//        try {
-//            playerService.updatePlayer(playerDTO);
-//            return ResponseEntity.status(HttpStatus.OK).body("Player updated successfully");
-//        } catch (PlayerNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
 
     @DeleteMapping("/{playerName}")
     public ResponseEntity<String> deletePlayer(@PathVariable String playerName){

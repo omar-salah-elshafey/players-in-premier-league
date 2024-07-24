@@ -46,18 +46,6 @@ public class PlayerService {
         }
     }
 
-//    public void updatePlayer(PlayerDTO playerDTO) throws PlayerNotFoundException {
-//        Optional<Player> existingPlayer = playerRepository.findByName(playerDTO.getName());
-//
-//        if (existingPlayer.isPresent()) {
-//            Player playerUpdate = existingPlayer.get();
-//            playerMapper.updatePlayer(playerDTO, playerUpdate);
-//            playerRepository.save(playerUpdate);
-//        } else {
-//            throw new PlayerNotFoundException("Player not found with name: " + playerDTO.getName());
-//        }
-//    }
-
     @Transactional
     public void deletePlayer(String playerName){
         Optional<Player> existingPlayer = playerRepository.findByName(playerName);

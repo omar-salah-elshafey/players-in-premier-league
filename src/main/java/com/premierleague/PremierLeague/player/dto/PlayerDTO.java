@@ -1,6 +1,5 @@
 package com.premierleague.PremierLeague.player.dto;
 
-import com.premierleague.PremierLeague.team.model.Team;
 import jakarta.persistence.Id;
 import lombok.*;
 
