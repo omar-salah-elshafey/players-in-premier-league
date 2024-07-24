@@ -1,5 +1,7 @@
 package com.premierleague.PremierLeague.team.service;
 
+import com.premierleague.PremierLeague.player.model.Player;
+import com.premierleague.PremierLeague.player.repository.PlayerRepository;
 import com.premierleague.PremierLeague.team.dto.TeamDTO;
 import com.premierleague.PremierLeague.team.mapper.TeamMapper;
 import com.premierleague.PremierLeague.team.model.Team;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+    private final PlayerRepository playerRepository;
 
     public void addTeam(TeamDTO teamDTO) {
         teamRepository.save(teamMapper.teamDTOToTeam(teamDTO));
@@ -40,6 +43,11 @@ public class TeamService {
         Optional<Team> existingTeam = teamRepository.findByName(teamName);
 
         if (existingTeam.isPresent()) {
+            List<Player> players = playerRepository.findByTeamName(teamName);
+            for (Player player : players) {
+                player.setTeam(null);
+                playerRepository.save(player);
+            }
             teamRepository.deleteByName(teamName);
         }
     }

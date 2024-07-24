@@ -16,7 +16,7 @@ public class Player {
     private String name;
     private Integer age;
     private String nationality;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_name")
     private Team team;
     private String position;
